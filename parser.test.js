@@ -67,4 +67,22 @@ describe('JSONParser', () => {
       expect(parsed).toBe(bool);
     });
   });
+
+  describe('parseNull', () => {
+    test('false', () => {
+      const isNull = null;
+      const parser = new JSONParser(JSON.stringify(isNull));
+      const parsed = parser.parseNull();
+      expect(parsed).toBe(isNull);
+    });
+  });
+
+  describe('parseArray', () => {
+    test('simple array', () => {
+      const array = [1, 11.1, "string", false, null];
+      const parser = new JSONParser(JSON.stringify(array));
+      const parsed = parser.parseArray();
+      expect(parsed).toEqual(array);
+    });
+  });
 });

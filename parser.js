@@ -86,8 +86,38 @@ module.exports = class JSONPaser {
       default: return new Error();
     }
   }
-}
 
+  parseNull() {
+    if (this.source.at !== 'n') throw new Error();
+
+    const str = this.source.skip(4);
+    if (str === 'null') return null;
+    else throw new Error();
+  }
+
+  parseArray() {
+    if (this.source.at !== '[') throw new Error();
+    this.source.next();
+    const array = [];
+    
+    while (!this.source.empty && this.source.at !== ']') {
+      if (this.source.at === ',') this.source.next();
+      array.push(this.parseValue());
+    }
+
+    return array;
+  }
+
+  parseValue() {
+    if (this.source.at === '"') return this.parseString();
+    else if (NUMERIC.includes(this.source.at)) return this.parseNumber();
+    else if (['t', 'f'].includes(this.source.at)) return this.parseBool();
+    else if (this.source.at === 'n') return this.parseNull();
+
+    throw new Error();
+  }
+}
+ 
 const NUMERIC = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
 
 class Source {
