@@ -43,5 +43,12 @@ describe('JSONParser', () => {
       const parsed = parser.parseNumber();
       expect(parsed).toBe(number);
     });
+    
+    test('floating number', () => {
+      const number = 11.11;
+      const parser = new JSONParser(JSON.stringify(number));
+      const parsed = parser.parseNumber();
+      expect(parsed).toBe(number);
+    });
   });
 });

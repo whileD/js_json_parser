@@ -48,12 +48,27 @@ module.exports = class JSONPaser {
   }
 
   parseNumber() {
-    let str = '';
+    let num = '';
+
     while(!this.source.empty && NUMERIC.includes(this.source.at)) {
-      str += this.source.at;
+      num += this.source.at;
       this.source.next();
     }
-    return parseInt(str);
+
+    if (this.source.at !== '.') {
+      return parseInt(num);
+    }
+
+    num += '.';
+    this.source.next();
+
+    while(!this.source.empty && NUMERIC.includes(this.source.at)) {
+      num += this.source.at;
+      this.source.next();
+    }
+    
+    console.log(num);
+    return parseFloat(num);
   }
 }
 
