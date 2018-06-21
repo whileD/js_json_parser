@@ -10,6 +10,42 @@ module.exports = class JSONPaser {
 
   parseJSON() {
   }
+
+  /*
+  parseObject() {
+    if (this.source.at == '{') this.source.next();
+    else throw new Error('Error: object parse error');
+
+    const object = {};
+
+    while(!this.source.empty && this.source.at != '}') {
+      this.source.next();
+    }
+
+    if (this.source.at == '}') {
+      this.source.next();
+      return object;
+    } else throw new Error('Error: object parse error');
+  }
+  */
+
+  parseString() {
+    if (this.source.at != '"') throw new Error('SyntaxError: Not String');
+
+    this.source.next();
+    let str = "";
+
+    while(this.source.at != '"' && !this.source.empty) {
+      str += this.source.at;
+      this.source.next();
+    }
+
+    if (this.source.at != '"') throw new Error('SyntaxError: Not String');
+    else {
+      this.source.next();
+      return str;
+    }
+  }
 }
 
 class Source {
@@ -19,7 +55,7 @@ class Source {
   }
 
   next() {
-    p++;
+    this.p++;
     while (!this.empty && this.at == ' ')  p++;
   }
 
