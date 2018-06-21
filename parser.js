@@ -40,13 +40,24 @@ module.exports = class JSONPaser {
       this.source.next();
     }
 
-    if (this.source.at != '"') throw new Error('SyntaxError: Not String');
+    if (this.source.at !== '"') throw new Error('SyntaxError: Not String');
     else {
       this.source.next();
       return str;
     }
   }
+
+  parseNumber() {
+    let str = '';
+    while(!this.source.empty && NUMERIC.includes(this.source.at)) {
+      str += this.source.at;
+      this.source.next();
+    }
+    return parseInt(str);
+  }
 }
+
+const NUMERIC = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
 
 class Source {
   constructor(src) {

@@ -35,4 +35,13 @@ describe('JSONParser', () => {
       expect(parsed).toBe(str);
     });
   });
+
+  describe('parseNumber', () => {
+    test('integer number', () => {
+      const number = 1111;
+      const parser = new JSONParser(JSON.stringify(number));
+      const parsed = parser.parseNumber();
+      expect(parsed).toBe(number);
+    });
+  });
 });
