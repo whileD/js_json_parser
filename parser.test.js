@@ -51,4 +51,20 @@ describe('JSONParser', () => {
       expect(parsed).toBe(number);
     });
   });
+
+  describe('parseBool', () => {
+    test('true', () => {
+      const bool = true;
+      const parser = new JSONParser(JSON.stringify(bool));
+      const parsed = parser.parseBool();
+      expect(parsed).toBe(bool);
+    });
+
+    test('false', () => {
+      const bool = false;
+      const parser = new JSONParser(JSON.stringify(bool));
+      const parsed = parser.parseBool();
+      expect(parsed).toBe(bool);
+    });
+  });
 });

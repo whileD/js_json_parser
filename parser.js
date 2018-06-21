@@ -67,8 +67,24 @@ module.exports = class JSONPaser {
       this.source.next();
     }
     
-    console.log(num);
     return parseFloat(num);
+  }
+
+  parseBool() {
+    let bool = '';
+    switch(this.source.at) {
+      case 'f': {
+        bool = this.source.skip(5);
+        if (bool === 'false') return false;
+        else return new Error();
+      }
+      case 't': {
+        bool = this.source.skip(4);
+        if (bool === 'true') return true;
+        else return new Error();
+      }
+      default: return new Error();
+    }
   }
 }
 
@@ -83,6 +99,15 @@ class Source {
   next() {
     this.p++;
     while (!this.empty && this.at == ' ')  p++;
+  }
+
+  skip(num) {
+    let str = '';
+    for (let i=0; i<num; i++) {
+      str += this.at;
+      this.next();
+    }
+    return str;
   }
 
   get empty() {
