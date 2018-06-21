@@ -5,29 +5,8 @@ module.exports = class JSONPaser {
 
   static parse(src) {
     const parser = new JSONPaser(src);
-    return parser.parseJSON();
+    return parser.parseValue();
   }
-
-  parseJSON() {
-  }
-
-  /*
-  parseObject() {
-    if (this.source.at == '{') this.source.next();
-    else throw new Error('Error: object parse error');
-
-    const object = {};
-
-    while(!this.source.empty && this.source.at != '}') {
-      this.source.next();
-    }
-
-    if (this.source.at == '}') {
-      this.source.next();
-      return object;
-    } else throw new Error('Error: object parse error');
-  }
-  */
 
   parseString() {
     if (this.source.at != '"') throw new Error('SyntaxError: Not String');
@@ -105,6 +84,7 @@ module.exports = class JSONPaser {
       array.push(this.parseValue());
     }
 
+    this.source.next();
     return array;
   }
 
@@ -122,6 +102,8 @@ module.exports = class JSONPaser {
       object[key] = value;
     }
 
+    this.source.next();
+
     return object;
   }
 
@@ -130,7 +112,10 @@ module.exports = class JSONPaser {
     else if (NUMERIC.includes(this.source.at)) return this.parseNumber();
     else if (['t', 'f'].includes(this.source.at)) return this.parseBool();
     else if (this.source.at === 'n') return this.parseNull();
+    else if (this.source.at === '{') return this.parseObject();
+    else if (this.source.at === '[') return this.parseArray();
 
+    console.log(this.source.skip(10));
     throw new Error();
   }
 }

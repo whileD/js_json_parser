@@ -5,7 +5,7 @@ const jsonObject = {
   float : 1.44,
   string: "string",
   n: null,
-  array : [1, "string", {name: "name", age: 19.0}],
+  array : [1, "string", {name: "name", age: 19.01}],
   object: {
     name: "name",
     age: 20
@@ -16,17 +16,6 @@ const jsonObject = {
 const jsonArray = [jsonObject, jsonObject];
 
 describe('JSONParser', () => {
-  /*
-  describe('parseObject', () => {
-    test('simple object', () => {
-      const object = { a: 1, b: "c" };
-      const parser = new JSONParser(JSON.stringify(object));
-      const parsed = parser.parseObject();
-      expect(parsed).toMatchObject(object);
-    });
-  });
-  */
-
   describe('parseString', () => {
     test('simple string', () => {
       const str = "string";
@@ -92,6 +81,13 @@ describe('JSONParser', () => {
       const parser = new JSONParser(JSON.stringify(object));
       const parsed = parser.parseObject();
       expect(parsed).toEqual(object);
+    });
+  });
+
+  describe('parse', () => {
+    test('json', () => {
+      const parsed = JSONParser.parse(JSON.stringify(jsonObject));
+      expect(parsed).toEqual(jsonObject);
     });
   });
 });
