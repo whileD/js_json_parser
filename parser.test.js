@@ -85,4 +85,13 @@ describe('JSONParser', () => {
       expect(parsed).toEqual(array);
     });
   });
+
+  describe('parseObject', () => {
+    test('simple object', () => {
+      const object = {a: 11, b: 11.1, c: "string", d: false, e: null};
+      const parser = new JSONParser(JSON.stringify(object));
+      const parsed = parser.parseObject();
+      expect(parsed).toEqual(object);
+    });
+  });
 });

@@ -108,6 +108,23 @@ module.exports = class JSONPaser {
     return array;
   }
 
+  parseObject() {
+    if (this.source.at !== '{') throw new Error();
+    this.source.next();
+
+    const object = {};
+
+    while (!this.source.empty && this.source.at !== '}') {
+      if (this.source.at === ',') this.source.next();
+      const key = this.parseString();
+      if (this.source.at === ':') this.source.next();
+      const value = this.parseValue();
+      object[key] = value;
+    }
+
+    return object;
+  }
+
   parseValue() {
     if (this.source.at === '"') return this.parseString();
     else if (NUMERIC.includes(this.source.at)) return this.parseNumber();
@@ -117,6 +134,7 @@ module.exports = class JSONPaser {
     throw new Error();
   }
 }
+
  
 const NUMERIC = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
 
