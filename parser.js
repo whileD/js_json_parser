@@ -9,17 +9,18 @@ module.exports = class JSONPaser {
   }
 
   parseString() {
-    if (this.source.at != '"') throw new Error('SyntaxError: Not String');
+    if (this.source.at != '"') throw new SyntaxError();
 
     this.source.next();
-    let str = "";
+    let str = '';
 
-    while(this.source.at != '"' && !this.source.empty) {
+    while(this.source.at !== '"' && !this.source.empty) {
+      if (this.source.at === '\\') this.source.inc();
       str += this.source.at;
-      this.source.next();
+      this.source.inc();
     }
 
-    if (this.source.at !== '"') throw new Error('SyntaxError: Not String');
+    if (this.source.at !== '"') throw new SyntaxError();
     else {
       this.source.next();
       return str;
@@ -28,6 +29,11 @@ module.exports = class JSONPaser {
 
   parseNumber() {
     let num = '';
+
+    if (this.source.at === '-') {
+      num += this.source.at;
+      this.source.next();
+    }
 
     while(!this.source.empty && NUMERIC.includes(this.source.at)) {
       num += this.source.at;
@@ -129,9 +135,13 @@ class Source {
     this.p = 0;
   }
 
+  inc() {
+    this.p++;
+  }
+
   next() {
     this.p++;
-    while (!this.empty && this.at == ' ')  p++;
+    while (!this.empty && this.at == ' ')  this.p++;
   }
 
   skip(num) {

@@ -18,7 +18,14 @@ const jsonArray = [jsonObject, jsonObject];
 describe('JSONParser', () => {
   describe('parseString', () => {
     test('simple string', () => {
-      const str = "string";
+      const str = 'string';
+      const parser = new JSONParser(JSON.stringify(str));
+      const parsed = parser.parseString();
+      expect(parsed).toBe(str);
+    });
+
+    test('escape string', () => {
+      const str = '\' \s \\ aaaaa \ ';
       const parser = new JSONParser(JSON.stringify(str));
       const parsed = parser.parseString();
       expect(parsed).toBe(str);
@@ -26,19 +33,34 @@ describe('JSONParser', () => {
   });
 
   describe('parseNumber', () => {
-    test('integer number', () => {
+    test('positive number', () => {
       const number = 1111;
       const parser = new JSONParser(JSON.stringify(number));
       const parsed = parser.parseNumber();
       expect(parsed).toBe(number);
     });
     
-    test('floating number', () => {
+    test('poistive floating number', () => {
       const number = 11.11;
       const parser = new JSONParser(JSON.stringify(number));
       const parsed = parser.parseNumber();
       expect(parsed).toBe(number);
     });
+
+    test('negative number', () => {
+      const number = -1111;
+      const parser = new JSONParser(JSON.stringify(number));
+      const parsed = parser.parseNumber();
+      expect(parsed).toBe(number);
+    });
+
+    test('poistive floating number', () => {
+      const number = -11.11;
+      const parser = new JSONParser(JSON.stringify(number));
+      const parsed = parser.parseNumber();
+      expect(parsed).toBe(number);
+    });
+
   });
 
   describe('parseBool', () => {
